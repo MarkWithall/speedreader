@@ -53,7 +53,7 @@ function displayWord(word)
 {
     var newBody = document.createElement('body');
     var p = document.createElement('p');
-    p.style.cssText = "color: black !important; font-size: 40px !important; margin: 20px !important;";
+    p.style.cssText = "text-align: left !important; background-color: white !important; color: black !important; font-size: 40px !important; margin: 20px !important;";
     p.appendChild(document.createTextNode(word));
     newBody.appendChild(p);
     document.body.innerHTML = newBody.innerHTML;
