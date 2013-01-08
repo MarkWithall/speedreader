@@ -1,7 +1,7 @@
 speedreader
 ===========
 
-A bookmarklet to speed read webpages in the style of the Read Quick iPad app.
+A bookmarklet to speed read webpages in the style of the [Read Quick](http://readquickapp.com/) iPad app.
 
 To use: select some text and then click the bookmark.
 
