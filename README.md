@@ -10,6 +10,7 @@ Future Work
 * Cancel reading (leave last word read highlighted?)
 * Configurable wpm
 * Read whole page if no text selected
+* Remember scrollbar position, selected text
 * Needs to clear the style (to cope with e.g. black backgrounds, alternate alignments, etc.)
 * Make it prettier (configurable font, size, colours, etc.)
 * Make this a gh page so it is easy to drag the link to the bookmark bar
