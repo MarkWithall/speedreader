@@ -1,4 +1,3 @@
-function speedRead() {
     'use strict';
     /*jslint browser: true*/
 
@@ -55,4 +54,3 @@ function speedRead() {
     }
 
     displayWords(splitIntoWords(strip(getSelectionHtml())));
-}
