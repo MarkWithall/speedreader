@@ -4,7 +4,7 @@ function speedRead() {
 
     function getSelectionHtml() {
         var html = '', sel, container, i, len;
-        if (typeof window.getSelection != 'undefined') {
+        if (window.getSelection !== undefined) {
             sel = window.getSelection();
             if (sel.rangeCount) {
                 container = document.createElement('div');
@@ -13,8 +13,8 @@ function speedRead() {
                 }
                 html = container.innerHTML;
             }
-        } else if (typeof document.selection != 'undefined') {
-            if (document.selection.type == 'Text') {
+        } else if (document.selection !== undefined) {
+            if (document.selection.type === 'Text') {
                 html = document.selection.createRange().htmlText;
             }
         }
@@ -54,5 +54,5 @@ function speedRead() {
         }, 150);
     }
 
-    displayWords(splitIntoWords(strip(getSelectionHtml)));
+    displayWords(splitIntoWords(strip(getSelectionHtml())));
 }
