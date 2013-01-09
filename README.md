@@ -16,6 +16,7 @@ Future Work
 * Read whole page if no text selected
 * Remember scrollbar position, selected text
 * Needs to clear the style (to cope with e.g. black backgrounds, alternate alignments, etc.)
+* Retain pause between sentences
 * Make it prettier (configurable font, size, colours, etc.)
 * Don't keep re-creating script if running multiple times on the same page
 * Make updating version (that references a js file here, rather than inline)
