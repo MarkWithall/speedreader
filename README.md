@@ -5,6 +5,8 @@ A bookmarklet to speed read webpages in the style of the [Read Quick](http://rea
 
 To use: select some text and then click the bookmark.
 
+Tested in Safari and Chrome.
+
 Future Work
 ==
 * Cancel reading (leave last word read highlighted?)
