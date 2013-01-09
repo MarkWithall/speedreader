@@ -14,7 +14,7 @@ function speedRead() {
                 html = container.innerHTML;
             }
         } else if (document.selection !== undefined) {
-            if (document.selection.type == 'Text') {
+            if (document.selection.type === 'Text') {
                 html = document.selection.createRange().htmlText;
             }
         }
