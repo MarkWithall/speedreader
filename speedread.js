@@ -4,7 +4,7 @@ function speedRead() {
 
     function getSelectionHtml() {
         var html = '', sel, container, i, len;
-        if (window.getSelection !== undefined) {
+        if (typeof window.getSelection !== 'undefined') {
             sel = window.getSelection();
             if (sel.rangeCount) {
                 container = document.createElement('div');
@@ -13,7 +13,7 @@ function speedRead() {
                 }
                 html = container.innerHTML;
             }
-        } else if (document.selection !== undefined) {
+        } else if (typeof document.selection !== 'undefined') {
             if (document.selection.type == 'Text') {
                 html = document.selection.createRange().htmlText;
             }
