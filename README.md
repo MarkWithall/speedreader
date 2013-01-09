@@ -1,4 +1,4 @@
-speedreader
+SpeedReader
 ===========
 
 A bookmarklet to speed read webpages in the style of the [Read Quick](http://readquickapp.com/) iPad app.
