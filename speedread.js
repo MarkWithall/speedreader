@@ -40,14 +40,14 @@ function speedRead() {
         var i = 0;
         var oldBody = document.body.innerHTML;
         var interval = setInterval(function() {
-                if (i >= words.length) {
+            if (i >= words.length) {
                 clearInterval(interval);
                 document.body.innerHTML = oldBody;
-                } else {
+            } else {
                 displayWord(words[i]);
                 i++;
-                }
-                }, 150);
+            }
+        }, 150);
     }
 
     function displayWord(word)
