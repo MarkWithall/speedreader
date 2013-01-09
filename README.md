@@ -17,7 +17,7 @@ Future Work
 * Remember scrollbar position, selected text
 * Needs to clear the style (to cope with e.g. black backgrounds, alternate alignments, etc.)
 * Make it prettier (configurable font, size, colours, etc.)
-* Make this a gh page so it is easy to drag the link to the bookmark bar
+* Don't keep re-creating script if running multiple times on the same page
 * Make updating version (that references a js file here, rather than inline)
 * Test cross-browser compatibility
 * Tidy code
