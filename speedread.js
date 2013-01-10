@@ -32,21 +32,27 @@ function speedRead() {
     }
 
     function displayWord(word) {
-        var newBody = document.createElement('body'), p;
+        var srDialog = document.getElementById('srDialog'), p, oldWord;
+        oldWord = document.getElementById('srWord');
+        if (oldWord !== null) {
+            srDialog.removeChild(oldWord);
+        }
         p = document.createElement('p');
+        p.id = 'srWord';
         p.style.cssText = 'text-align: left !important; background-color: white !important; color: black !important; font-size: 40px !important; margin: 20px !important;';
         p.appendChild(document.createTextNode(word));
-        newBody.appendChild(p);
-        document.body.innerHTML = newBody.innerHTML;
+        srDialog.appendChild(p);
     }
 
     function displayWords(words) {
-        var i = 0, oldBody, interval;
-        oldBody = document.body.innerHTML;
+        var i = 0, interval, srDialog = document.createElement('div');
+        srDialog.id = 'srDialog';
+        srDialog.style.cssText = 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%25; height: 100%25; z-index: 1000;';
+        document.body.appendChild(srDialog);
         interval = setInterval(function () {
             if (i >= words.length) {
                 clearInterval(interval);
-                document.body.innerHTML = oldBody;
+                document.body.removeChild(srDialog);
             } else {
                 displayWord(words[i]);
                 i += 1;
