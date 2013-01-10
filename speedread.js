@@ -39,7 +39,7 @@ function speedRead() {
         }
         p = document.createElement('p');
         p.id = 'srWord';
-        p.style.cssText = 'text-align: left !important; background-color: white !important; color: black !important; font-size: 40px !important; position: fixed; width: 200px; margin-left: -100px; height: 100px; margin-top: -50px;';
+        p.style.cssText = 'text-align: center !important; background-color: white !important; color: black !important; font-size: 40px !important; position: fixed; width: 200px; margin-left: -100px; height: 100px; margin-top: -50px;';
         p.appendChild(document.createTextNode(word));
         srDialog.appendChild(p);
     }
