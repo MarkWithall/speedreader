@@ -2,8 +2,6 @@ function speedRead() {
     'use strict';
     /*jslint browser: true*/
 
-    var interval;
-
     function getSelectionText() {
         if (window.getSelection) {
             return window.getSelection();
@@ -41,7 +39,7 @@ function speedRead() {
         srDialog.appendChild(p);
     }
 
-    function closeDialogOnEsc() {
+    function closeDialogOnEsc(interval) {
         document.body.onkeydown = function(evt) {
             if (window.event.keyCode === 27) {
                 evt.preventDefault(); /* stop Mac Safari exiting full screen */
@@ -57,7 +55,6 @@ function speedRead() {
         srDialog.style.cssText = 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;';
         document.body.appendChild(srDialog);
         srDialog.focus();
-        closeDialogOnEsc();
     }
 
     function removeDialog() {
@@ -70,7 +67,7 @@ function speedRead() {
     function displayWords(words) {
         var i = 0;
         createDialog();
-        interval = setInterval(function () {
+        var interval = setInterval(function () {
             if (i >= words.length) {
                 clearInterval(interval);
                 removeDialog();
@@ -79,6 +76,7 @@ function speedRead() {
                 i += 1;
             }
         }, 225);
+        closeDialogOnEsc(interval);
     }
 
     displayWords(splitIntoWords(strip(getSelectionText())));
