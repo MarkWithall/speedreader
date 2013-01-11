@@ -21,6 +21,19 @@ function speedRead() {
         return html;
     }
 
+    function getSelectionText() {
+        if (window.getSelection) {
+            return window.getSelection();
+        }
+        if (document.getSelection) {
+            return document.getSelection();
+        }
+        if (document.selection) {
+            return document.selection.createRange().text;
+        }
+        return '';
+    }
+
     function strip(html) {
         var tmp = document.createElement('DIV');
         tmp.innerHTML = html;
@@ -61,5 +74,5 @@ function speedRead() {
         }, 150);
     }
 
-    displayWords(splitIntoWords(strip(getSelectionHtml())));
+    displayWords(splitIntoWords(strip(getSelectionText())));
 }
