@@ -11,14 +11,10 @@ Tested in Safari and Chrome; inline edition works in IE9.
 
 Future Work
 ==
-* Cancel reading (leave last word read highlighted?)
 * Configurable wpm
-* Read whole page if no text selected
-* Remember scrollbar position, selected text
-* Needs to clear the style (to cope with e.g. black backgrounds, alternate alignments, etc.)
 * Retain pause between sentences
 * Make it prettier (configurable font, size, colours, etc.)
 * Don't keep re-creating script if running multiple times on the same page
-* Make updating version (that references a js file here, rather than inline)
+* Add version checking for inline version
 * Test cross-browser compatibility
 * Tidy code
