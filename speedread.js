@@ -22,7 +22,7 @@ function speedRead() {
     }
 
     function splitIntoWords(text) {
-        return text.split(' ');
+        return text.split(/\s+/);
     }
 
     function displayWord(word) {
