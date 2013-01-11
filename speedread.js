@@ -39,7 +39,8 @@ function speedRead() {
         }
         p = document.createElement('p');
         p.id = 'srWord';
-        p.style.cssText = 'text-align: center !important; background-color: white !important; color: black !important; font-size: 40px !important; position: fixed; top: 50%25; left: 50%25; width: 200px; margin-left: -100px; height: 100px; margin-top: -50px;';
+        /* NOTE: percentages need to be e.g. 100%25 in bookmarklets! */
+        p.style.cssText = 'text-align: center !important; background-color: white !important; color: black !important; font-size: 40px !important; position: fixed; top: 50%; left: 50%; width: 200px; margin-left: -100px; height: 100px; margin-top: -50px;';
         p.appendChild(document.createTextNode(word));
         srDialog.appendChild(p);
     }
@@ -47,7 +48,7 @@ function speedRead() {
     function displayWords(words) {
         var i = 0, interval, srDialog = document.createElement('div');
         srDialog.id = 'srDialog';
-        srDialog.style.cssText = 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%25; height: 100%25; z-index: 1000;';
+        srDialog.style.cssText = 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;';
         document.body.appendChild(srDialog);
         interval = setInterval(function () {
             if (i >= words.length) {
