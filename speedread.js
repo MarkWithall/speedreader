@@ -97,7 +97,7 @@ function speedRead() {
                 displayWord(words[i]);
                 i += 1;
             }
-        }, 150);
+        }, 225);
     }
 
     displayWords(splitIntoWords(strip(getSelectionText())));
