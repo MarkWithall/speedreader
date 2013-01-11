@@ -2,6 +2,8 @@ function speedRead() {
     'use strict';
     /*jslint browser: true*/
 
+    var interval;
+
     function getSelectionHtml() {
         var html = '', sel, container, i, len;
         if (window.getSelection !== undefined) {
@@ -58,19 +60,34 @@ function speedRead() {
         srDialog.appendChild(p);
     }
 
+    function closeDialogOnEsc() {
+        document.body.onkeydown = function(evt) {
+            if (window.event.keyCode == 27) {
+                evt.preventDefault(); /* stop Mac Safari exiting full screen */
+                clearInterval(interval);
+                removeDialog();
+            }
+        }
+    }
+
     function createDialog() {
         var srDialog = document.createElement('div');
         srDialog.id = 'srDialog';
         srDialog.style.cssText = 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;';
         document.body.appendChild(srDialog);
+        srDialog.focus();
+        closeDialogOnEsc();
     }
 
     function removeDialog() {
-        document.body.removeChild(document.getElementById('srDialog'));
+        var srDialog = document.getElementById('srDialog');
+        if (srDialog != null) {
+            document.body.removeChild(srDialog);
+        }
     }
 
     function displayWords(words) {
-        var i = 0, interval;
+        var i = 0;
         createDialog();
         interval = setInterval(function () {
             if (i >= words.length) {
