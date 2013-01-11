@@ -43,12 +43,12 @@ function speedRead() {
 
     function closeDialogOnEsc() {
         document.body.onkeydown = function(evt) {
-            if (window.event.keyCode == 27) {
+            if (window.event.keyCode === 27) {
                 evt.preventDefault(); /* stop Mac Safari exiting full screen */
                 clearInterval(interval);
                 removeDialog();
             }
-        }
+        };
     }
 
     function createDialog() {
@@ -62,7 +62,7 @@ function speedRead() {
 
     function removeDialog() {
         var srDialog = document.getElementById('srDialog');
-        if (srDialog != null) {
+        if (srDialog !== null) {
             document.body.removeChild(srDialog);
         }
     }
