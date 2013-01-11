@@ -4,25 +4,6 @@ function speedRead() {
 
     var interval;
 
-    function getSelectionHtml() {
-        var html = '', sel, container, i, len;
-        if (window.getSelection !== undefined) {
-            sel = window.getSelection();
-            if (sel.rangeCount) {
-                container = document.createElement('div');
-                for (i = 0, len = sel.rangeCount; i < len; i += 1) {
-                    container.appendChild(sel.getRangeAt(i).cloneContents());
-                }
-                html = container.innerHTML;
-            }
-        } else if (document.selection !== undefined) {
-            if (document.selection.type === 'Text') {
-                html = document.selection.createRange().htmlText;
-            }
-        }
-        return html;
-    }
-
     function getSelectionText() {
         if (window.getSelection) {
             return window.getSelection();
