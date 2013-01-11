@@ -58,15 +58,24 @@ function speedRead() {
         srDialog.appendChild(p);
     }
 
-    function displayWords(words) {
-        var i = 0, interval, srDialog = document.createElement('div');
+    function createDialog() {
+        var srDialog = document.createElement('div');
         srDialog.id = 'srDialog';
         srDialog.style.cssText = 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;';
         document.body.appendChild(srDialog);
+    }
+
+    function removeDialog() {
+        document.body.removeChild(document.getElementById('srDialog'));
+    }
+
+    function displayWords(words) {
+        var i = 0, interval;
+        createDialog();
         interval = setInterval(function () {
             if (i >= words.length) {
                 clearInterval(interval);
-                document.body.removeChild(srDialog);
+                removeDialog();
             } else {
                 displayWord(words[i]);
                 i += 1;
