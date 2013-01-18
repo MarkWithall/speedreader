@@ -28,7 +28,9 @@ function ElementCreator() {
         var elem = document.createElement(type);
         elem.id = id;
         for (var property in css) {
-            elem.style[property] = css[property];
+            if (css.hasOwnProperty(property)) {
+                elem.style[property] = css[property];
+            }
         }
         return elem;
     };
@@ -101,7 +103,7 @@ function WordDisplayer(words, srDialog, finished) {
 
     this.nextWord = function() {
         if (_i >= _words.length) {
-            finished();
+            _finished();
         } else {
             _srDialog.showWord(_words[_i]);
             _i += 1;
