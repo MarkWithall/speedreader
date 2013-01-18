@@ -24,40 +24,48 @@ function splitIntoWords(text) {
 }
 
 function ElementCreator() {
-    this.create = function(type, id, css) {
+    var create = function(type, id, css) {
         var elem = document.createElement(type);
         elem.id = id;
         elem.style.cssText = css;
         return elem;
     };
+
+    this.createDiv = function(id, css) {
+        return create('div', id, css);
+    };
+
+    this.createPara = function(id, css) {
+        return create('p', id, css);
+    };
 }
 
 function SrDialog() {
-    this.dialog = null;
-    this.p = null;
+    var dialog = null;
+    var p = null;
 
     this.create = function() {
         var creator = new ElementCreator();
 
-        this.dialog = creator.create('div', 'srDialog', 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;');
+        dialog = creator.createDiv('srDialog', 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;');
 
         /* NOTE: percentages need to be changed to e.g. 100%25 for inline bookmarklets! */
-        this.p = creator.create('p', 'srWord', 'text-align: center; background-color: white; color: black; font-size: 40px; position: fixed; top: 50%; left: 50%; width: 400px; margin-left: -200px; height: 100px; margin-top: -50px;');
+        p = creator.createPara('srWord', 'text-align: center; background-color: white; color: black; font-size: 40px; position: fixed; top: 50%; left: 50%; width: 400px; margin-left: -200px; height: 100px; margin-top: -50px;');
 
-        this.p.innerText = '';
-        this.dialog.appendChild(this.p);
-        document.body.appendChild(this.dialog);
-        this.dialog.focus();
+        p.innerText = '';
+        dialog.appendChild(p);
+        document.body.appendChild(dialog);
+        dialog.focus();
     };
 
     this.remove = function() {
-        if (this.dialog !== null) {
-            document.body.removeChild(this.dialog);
+        if (dialog !== null) {
+            document.body.removeChild(dialog);
         }
     };
 
     this.showWord = function(word) {
-        this.p.innerText = word;
+        p.innerText = word;
     };
 }
 
