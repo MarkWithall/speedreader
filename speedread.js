@@ -23,19 +23,22 @@ function splitIntoWords(text) {
     return text.split(/\s+/);
 }
 
-function createDialog() {
-    var srDialog = document.createElement('div');
-    srDialog.id = 'srDialog';
-    srDialog.style.cssText = 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;';
-    document.body.appendChild(srDialog);
-    srDialog.focus();
-}
+function SrDialog() {
+    this.dialog = null;
 
-function removeDialog() {
-    var srDialog = document.getElementById('srDialog');
-    if (srDialog !== null) {
-        document.body.removeChild(srDialog);
-    }
+    this.create = function() {
+        this.dialog = document.createElement('div');
+        this.dialog.id = 'srDialog';
+        this.dialog.style.cssText = 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;';
+        document.body.appendChild(this.dialog);
+        this.dialog.focus();
+    };
+
+    this.remove = function() {
+        if (this.dialog !== null) {
+            document.body.removeChild(this.dialog);
+        }
+    };
 }
 
 function WordDisplayer(words, finished) {
@@ -67,7 +70,7 @@ function WordDisplayer(words, finished) {
     };
 }
 
-function handleKeyPresses(interval, displayer) {
+function handleKeyPresses(interval, displayer, srDialog) {
     var playing = true;
     var ESCAPE_KEY_CODE = 27;
     var SPACE_KEY_CODE = 32;
@@ -75,7 +78,7 @@ function handleKeyPresses(interval, displayer) {
         if (window.event.keyCode === ESCAPE_KEY_CODE) {
             evt.preventDefault(); /* stop Mac Safari exiting full screen */
             clearInterval(interval);
-            removeDialog();
+            srDialog.remove();
         }
         else if (window.event.keyCode === SPACE_KEY_CODE) {
             evt.preventDefault();
@@ -91,12 +94,15 @@ function handleKeyPresses(interval, displayer) {
 }
 
 function displayWords(words) {
-    if (words.length === 1 && words[0] === "") return;
-    createDialog();
+    if (words.length === 1 && words[0] === "") {
+        return;
+    }
+    var srDialog = new SrDialog();
+    srDialog.create();
     var interval;
-    var displayer = new WordDisplayer(words, function() {clearInterval(interval); removeDialog();});
+    var displayer = new WordDisplayer(words, function() {clearInterval(interval); srDialog.remove();});
     interval = setInterval(function() {displayer.nextWord();}, 225);
-    handleKeyPresses(interval, displayer);
+    handleKeyPresses(interval, displayer, srDialog);
 }
 
 function speedRead() {
