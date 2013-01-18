@@ -25,11 +25,20 @@ function splitIntoWords(text) {
 
 function SrDialog() {
     this.dialog = null;
+    this.p = null;
 
     this.create = function() {
         this.dialog = document.createElement('div');
         this.dialog.id = 'srDialog';
         this.dialog.style.cssText = 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;';
+
+        this.p = document.createElement('p');
+        this.p.id = 'srWord';
+        /* NOTE: percentages need to be changed to e.g. 100%25 for inline bookmarklets! */
+        this.p.style.cssText = 'text-align: center; background-color: white; color: black; font-size: 40px; position: fixed; top: 50%; left: 50%; width: 400px; margin-left: -200px; height: 100px; margin-top: -50px;';
+        this.p.innerText = '';
+        this.dialog.appendChild(this.p);
+
         document.body.appendChild(this.dialog);
         this.dialog.focus();
     };
@@ -39,32 +48,23 @@ function SrDialog() {
             document.body.removeChild(this.dialog);
         }
     };
+
+    this.showWord = function(word) {
+        this.p.innerText = word;
+    };
 }
 
-function WordDisplayer(words, finished) {
+function WordDisplayer(words, srDialog, finished) {
     this.words = words;
+    this.srDialog = srDialog;
     this.finished = finished;
     this.i = 0;
-
-    this.displayWord = function(word) {
-        var srDialog = document.getElementById('srDialog'), p, oldWord;
-        oldWord = document.getElementById('srWord');
-        if (oldWord !== null) {
-            srDialog.removeChild(oldWord);
-        }
-        p = document.createElement('p');
-        p.id = 'srWord';
-        /* NOTE: percentages need to be changed to e.g. 100%25 for inline bookmarklets! */
-        p.style.cssText = 'text-align: center; background-color: white; color: black; font-size: 40px; position: fixed; top: 50%; left: 50%; width: 400px; margin-left: -200px; height: 100px; margin-top: -50px;';
-        p.appendChild(document.createTextNode(word));
-        srDialog.appendChild(p);
-    };
 
     this.nextWord = function() {
         if (this.i >= this.words.length) {
             this.finished();
         } else {
-            this.displayWord(this.words[this.i]);
+            this.srDialog.showWord(this.words[this.i]);
             this.i += 1;
         }
     };
@@ -100,7 +100,7 @@ function displayWords(words) {
     var srDialog = new SrDialog();
     srDialog.create();
     var interval;
-    var displayer = new WordDisplayer(words, function() {clearInterval(interval); srDialog.remove();});
+    var displayer = new WordDisplayer(words, srDialog, function() {clearInterval(interval); srDialog.remove();});
     interval = setInterval(function() {displayer.nextWord();}, 225);
     handleKeyPresses(interval, displayer, srDialog);
 }
