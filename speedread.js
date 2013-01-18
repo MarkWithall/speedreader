@@ -23,22 +23,29 @@ function splitIntoWords(text) {
     return text.split(/\s+/);
 }
 
+function ElementCreator() {
+    this.create = function(type, id, css) {
+        var elem = document.createElement(type);
+        elem.id = id;
+        elem.style.cssText = css;
+        return elem;
+    }
+}
+
 function SrDialog() {
     this.dialog = null;
     this.p = null;
 
     this.create = function() {
-        this.dialog = document.createElement('div');
-        this.dialog.id = 'srDialog';
-        this.dialog.style.cssText = 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;';
+        var creator = new ElementCreator();
 
-        this.p = document.createElement('p');
-        this.p.id = 'srWord';
+        this.dialog = creator.create('div', 'srDialog', 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;');
+
         /* NOTE: percentages need to be changed to e.g. 100%25 for inline bookmarklets! */
-        this.p.style.cssText = 'text-align: center; background-color: white; color: black; font-size: 40px; position: fixed; top: 50%; left: 50%; width: 400px; margin-left: -200px; height: 100px; margin-top: -50px;';
+        this.p = creator.create('p', 'srWord', 'text-align: center; background-color: white; color: black; font-size: 40px; position: fixed; top: 50%; left: 50%; width: 400px; margin-left: -200px; height: 100px; margin-top: -50px;');
+
         this.p.innerText = '';
         this.dialog.appendChild(this.p);
-
         document.body.appendChild(this.dialog);
         this.dialog.focus();
     };
