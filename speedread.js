@@ -38,16 +38,6 @@ function displayWord(word) {
     srDialog.appendChild(p);
 }
 
-function closeDialogOnEsc(interval) {
-    document.body.onkeydown = function(evt) {
-        if (window.event.keyCode === 27) {
-            evt.preventDefault(); /* stop Mac Safari exiting full screen */
-            clearInterval(interval);
-            removeDialog();
-        }
-    };
-}
-
 function createDialog() {
     var srDialog = document.createElement('div');
     srDialog.id = 'srDialog';
@@ -63,8 +53,40 @@ function removeDialog() {
     }
 }
 
+var i = 0;
+
+function handleKeyPresses(interval, words) {
+    var playing = true;
+    var ESCAPE_KEY_CODE = 27;
+    var SPACE_KEY_CODE = 32;
+    document.body.onkeydown = function(evt) {
+        if (window.event.keyCode === ESCAPE_KEY_CODE) {
+            evt.preventDefault(); /* stop Mac Safari exiting full screen */
+            clearInterval(interval);
+            removeDialog();
+        }
+        else if (window.event.keyCode === SPACE_KEY_CODE) {
+            evt.preventDefault();
+            if (playing) {
+                clearInterval(interval);
+                playing = false;
+            } else {
+                interval = setInterval(function () {
+                    if (i >= words.length) {
+                        clearInterval(interval);
+                        removeDialog();
+                    } else {
+                        displayWord(words[i]);
+                        i += 1;
+                    }
+                }, 225);
+                playing = true;
+            }
+        }
+    }
+}
+
 function displayWords(words) {
-    var i = 0;
     createDialog();
     var interval = setInterval(function () {
         if (i >= words.length) {
@@ -75,7 +97,7 @@ function displayWords(words) {
             i += 1;
         }
     }, 225);
-    closeDialogOnEsc(interval);
+    handleKeyPresses(interval, words);
 }
 
 function speedRead() {
