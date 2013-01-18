@@ -29,7 +29,7 @@ function ElementCreator() {
         elem.id = id;
         elem.style.cssText = css;
         return elem;
-    }
+    };
 }
 
 function SrDialog() {
