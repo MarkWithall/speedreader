@@ -23,7 +23,7 @@ function splitIntoWords(text) {
     return text.split(/\s+/);
 }
 
-function ElementCreator() {
+var ElementCreator = new function() {
     var create = function(type, id, css) {
         var elem = document.createElement(type);
         elem.id = id;
@@ -49,9 +49,7 @@ function SrDialog() {
     var _p = null;
 
     this.create = function() {
-        var creator = new ElementCreator();
-
-        _dialog = creator.createDiv('srDialog', {
+        _dialog = ElementCreator.createDiv('srDialog', {
             'background-color': 'white',
             'opacity': '.95',
             'filter': 'alpha(opacity=95)',
@@ -64,7 +62,7 @@ function SrDialog() {
         });
 
         /* NOTE: percentages need to be changed to e.g. 100%25 for inline bookmarklets! */
-        _p = creator.createPara('srWord', {
+        _p = ElementCreator.createPara('srWord', {
             'text-align': 'center',
             'background-color': 'white',
             'color': 'black',
