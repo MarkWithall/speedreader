@@ -1,5 +1,4 @@
 'use strict';
-/*jslint browser: true*/
 
 function getSelectionText() {
     if (window.getSelection) {
