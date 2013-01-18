@@ -83,7 +83,7 @@ function handleKeyPresses(interval, words) {
                 playing = true;
             }
         }
-    }
+    };
 }
 
 function displayWords(words) {
