@@ -31,7 +31,7 @@ function displayWord(word) {
     }
     p = document.createElement('p');
     p.id = 'srWord';
-    /* NOTE: percentages need to be e.g. 100%25 in bookmarklets! */
+    /* NOTE: percentages need to be changed to e.g. 100%25 for inline bookmarklets! */
     p.style.cssText = 'text-align: center; background-color: white; color: black; font-size: 40px; position: fixed; top: 50%; left: 50%; width: 400px; margin-left: -200px; height: 100px; margin-top: -50px;';
     p.appendChild(document.createTextNode(word));
     srDialog.appendChild(p);
