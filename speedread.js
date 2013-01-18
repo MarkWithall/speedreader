@@ -23,20 +23,6 @@ function splitIntoWords(text) {
     return text.split(/\s+/);
 }
 
-function displayWord(word) {
-    var srDialog = document.getElementById('srDialog'), p, oldWord;
-    oldWord = document.getElementById('srWord');
-    if (oldWord !== null) {
-        srDialog.removeChild(oldWord);
-    }
-    p = document.createElement('p');
-    p.id = 'srWord';
-    /* NOTE: percentages need to be changed to e.g. 100%25 for inline bookmarklets! */
-    p.style.cssText = 'text-align: center; background-color: white; color: black; font-size: 40px; position: fixed; top: 50%; left: 50%; width: 400px; margin-left: -200px; height: 100px; margin-top: -50px;';
-    p.appendChild(document.createTextNode(word));
-    srDialog.appendChild(p);
-}
-
 function createDialog() {
     var srDialog = document.createElement('div');
     srDialog.id = 'srDialog';
@@ -52,9 +38,36 @@ function removeDialog() {
     }
 }
 
-var i = 0;
+function WordDisplayer(words, finished) {
+    this.words = words;
+    this.finished = finished;
+    this.i = 0;
 
-function handleKeyPresses(interval, words) {
+    this.displayWord = function(word) {
+        var srDialog = document.getElementById('srDialog'), p, oldWord;
+        oldWord = document.getElementById('srWord');
+        if (oldWord !== null) {
+            srDialog.removeChild(oldWord);
+        }
+        p = document.createElement('p');
+        p.id = 'srWord';
+        /* NOTE: percentages need to be changed to e.g. 100%25 for inline bookmarklets! */
+        p.style.cssText = 'text-align: center; background-color: white; color: black; font-size: 40px; position: fixed; top: 50%; left: 50%; width: 400px; margin-left: -200px; height: 100px; margin-top: -50px;';
+        p.appendChild(document.createTextNode(word));
+        srDialog.appendChild(p);
+    };
+
+    this.nextWord = function() {
+        if (this.i >= this.words.length) {
+            this.finished();
+        } else {
+            this.displayWord(this.words[this.i]);
+            this.i += 1;
+        }
+    };
+}
+
+function handleKeyPresses(interval, displayer) {
     var playing = true;
     var ESCAPE_KEY_CODE = 27;
     var SPACE_KEY_CODE = 32;
@@ -70,15 +83,7 @@ function handleKeyPresses(interval, words) {
                 clearInterval(interval);
                 playing = false;
             } else {
-                interval = setInterval(function () {
-                    if (i >= words.length) {
-                        clearInterval(interval);
-                        removeDialog();
-                    } else {
-                        displayWord(words[i]);
-                        i += 1;
-                    }
-                }, 225);
+                interval = setInterval(function() {displayer.nextWord();}, 225);
                 playing = true;
             }
         }
@@ -86,17 +91,12 @@ function handleKeyPresses(interval, words) {
 }
 
 function displayWords(words) {
+    if (words.length === 1 && words[0] === "") return;
     createDialog();
-    var interval = setInterval(function () {
-        if (i >= words.length) {
-            clearInterval(interval);
-            removeDialog();
-        } else {
-            displayWord(words[i]);
-            i += 1;
-        }
-    }, 225);
-    handleKeyPresses(interval, words);
+    var interval;
+    var displayer = new WordDisplayer(words, function() {clearInterval(interval); removeDialog();});
+    interval = setInterval(function() {displayer.nextWord();}, 225);
+    handleKeyPresses(interval, displayer);
 }
 
 function speedRead() {
