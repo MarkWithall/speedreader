@@ -27,7 +27,9 @@ function ElementCreator() {
     var create = function(type, id, css) {
         var elem = document.createElement(type);
         elem.id = id;
-        elem.style.cssText = css;
+        for (var property in css) {
+            elem.style[property] = css[property];
+        }
         return elem;
     };
 
@@ -47,10 +49,10 @@ function SrDialog() {
     this.create = function() {
         var creator = new ElementCreator();
 
-        _dialog = creator.createDiv('srDialog', 'background-color: white; opacity: .95; filter: alpha(opacity=95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;');
+        _dialog = creator.createDiv('srDialog', {'background-color': 'white', 'opacity': '.95', 'filter': 'alpha(opacity=95)', 'position': 'fixed', 'top': '0', 'left': '0', 'width': '100%', 'height': '100%', 'z-index': '1000'});
 
         /* NOTE: percentages need to be changed to e.g. 100%25 for inline bookmarklets! */
-        _p = creator.createPara('srWord', 'text-align: center; background-color: white; color: black; font-size: 40px; position: fixed; top: 50%; left: 50%; width: 400px; margin-left: -200px; height: 100px; margin-top: -50px;');
+        _p = creator.createPara('srWord', {'text-align': 'center', 'background-color': 'white', 'color': 'black', 'font-size': '40px', 'position': 'fixed', 'top': '50%', 'left': '50%', 'width': '400px', 'margin-left': '-200px', 'height': '100px', 'margin-top': '-50px'});
 
         _p.innerText = '';
         _dialog.appendChild(_p);
