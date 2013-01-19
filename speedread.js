@@ -18,14 +18,20 @@ function splitIntoWords(text) {
 }
 
 var ElementCreator = (function() {
+    var createCssText = function(css) {
+        var cssText = '';
+        for (var property in css) {
+            if (css.hasOwnProperty(property)) {
+                cssText += property + ': ' + css[property] + ';';
+            }
+        }
+        return cssText; 
+    };
+
     var create = function(type, id, css) {
         var elem = document.createElement(type);
         elem.id = id;
-        for (var property in css) {
-            if (css.hasOwnProperty(property)) {
-                elem.style[property] = css[property];
-            }
-        }
+        elem.style.cssText = createCssText(css);
         return elem;
     };
 
@@ -73,7 +79,7 @@ function SrDialog() {
             'margin-top': '-50px'
         });
 
-        _p.innerText = '';
+        _p.innerHTML = '';
         _dialog.appendChild(_p);
         document.body.appendChild(_dialog);
         _dialog.focus();
@@ -86,7 +92,7 @@ function SrDialog() {
     };
 
     this.showWord = function(word) {
-        _p.innerText = word;
+        _p.innerHTML = word;
     };
 }
 
@@ -127,12 +133,13 @@ function handleKeyPresses(looper, srDialog) {
     var ESCAPE_KEY_CODE = 27;
     var SPACE_KEY_CODE = 32;
     document.body.onkeydown = function(evt) {
-        if (window.event.keyCode === ESCAPE_KEY_CODE) {
+        evt = evt || window.event;
+        if (evt.keyCode === ESCAPE_KEY_CODE) {
             evt.preventDefault(); /* stop Mac Safari exiting full screen */
             looper.stop();
             srDialog.remove();
         }
-        else if (window.event.keyCode === SPACE_KEY_CODE) {
+        else if (evt.keyCode === SPACE_KEY_CODE) {
             evt.preventDefault();
             if (playing) {
                 looper.stop();
