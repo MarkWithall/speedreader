@@ -46,6 +46,7 @@ var ElementCreator = (function() {
     };
 })();
 
+/** @constructor */
 function SrDialog() {
     var _dialog = null;
     var _p = null;
@@ -95,6 +96,7 @@ function SrDialog() {
     };
 }
 
+/** @constructor */
 function WordDisplayer(words, srDialog, finished) {
     var _words = words;
     var _srDialog = srDialog;
@@ -111,6 +113,7 @@ function WordDisplayer(words, srDialog, finished) {
     };
 }
 
+/** @constructor */
 function Looper(callback, time) {
     var _callback = callback;
     var _time = time;
