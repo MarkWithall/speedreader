@@ -128,36 +128,46 @@ function Looper(callback, time) {
     };
 }
 
-function handleKeyPresses(looper, srDialog) {
-    var playing = true;
+/** @constructor */
+function SpeedReader(dialog) {
+    var _dialog = dialog;
+    var _looper = null;
+    var _playing = true;
     var ESCAPE_KEY_CODE = 27;
     var SPACE_KEY_CODE = 32;
-    document.body.onkeydown = function(evt) {
-        evt = evt || window.event;
-        if (evt.keyCode === ESCAPE_KEY_CODE) {
-            evt.preventDefault(); /* stop Mac Safari exiting full screen */
-            looper.stop();
-            srDialog.remove();
-        }
-        else if (evt.keyCode === SPACE_KEY_CODE) {
-            evt.preventDefault();
-            if (playing) {
-                looper.stop();
-                playing = false;
-            } else {
-                looper.start();
-                playing = true;
-            }
-        }
-    };
-}
 
-function displayWords(srDialog, words) {
-    var looper;
-    var displayer = new WordDisplayer(words, srDialog, function() {looper.stop(); srDialog.remove();});
-    looper = new Looper(function() {displayer.nextWord();}, 255);
-    looper.start();
-    handleKeyPresses(looper, srDialog);
+    var finish = function() {
+        _looper.stop();
+        _dialog.remove();
+    };
+
+    var pauseResume = function() {
+        if (_playing) {
+            _looper.stop();
+        } else {
+            _looper.start();
+        }
+        _playing = !_playing;
+    };
+
+    this.handKeyPresses = function() {
+        document.body.onkeydown = function(evt) {
+            evt = evt || window.event;
+            if (evt.keyCode === ESCAPE_KEY_CODE) {
+                evt.preventDefault(); /* stop Mac Safari exiting full screen */
+                finish();
+            } else if (evt.keyCode === SPACE_KEY_CODE) {
+                evt.preventDefault(); /* stop Mac Safari exiting full screen */
+                pauseResume();
+            }
+        };
+    };
+
+    this.displayWords = function(words) {
+        var displayer = new WordDisplayer(words, _dialog, finish);
+        _looper = new Looper(function() {displayer.nextWord();}, 255);
+        _looper.start();
+    };
 }
 
 function speedRead() {
@@ -169,5 +179,7 @@ function speedRead() {
     var dialog = new SrDialog();
     dialog.create();
 
-    displayWords(dialog, words);
+    var sr = new SpeedReader(dialog);
+    sr.handKeyPresses();
+    sr.displayWords(words);
 }
