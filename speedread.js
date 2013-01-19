@@ -109,41 +109,59 @@ function WordDisplayer(words, srDialog, finished) {
     };
 }
 
-function handleKeyPresses(interval, displayer, srDialog) {
+function Looper(callback, time) {
+    var _callback = callback;
+    var _time = time;
+    var _interval = null;
+
+    this.start = function() {
+        _interval = setInterval(_callback, _time);
+    }
+
+    this.stop = function() {
+        clearInterval(_interval);
+    }
+}
+
+function handleKeyPresses(looper, srDialog) {
     var playing = true;
     var ESCAPE_KEY_CODE = 27;
     var SPACE_KEY_CODE = 32;
     document.body.onkeydown = function(evt) {
         if (window.event.keyCode === ESCAPE_KEY_CODE) {
             evt.preventDefault(); /* stop Mac Safari exiting full screen */
-            clearInterval(interval);
+            looper.stop();
             srDialog.remove();
         }
         else if (window.event.keyCode === SPACE_KEY_CODE) {
             evt.preventDefault();
             if (playing) {
-                clearInterval(interval);
+                looper.stop();
                 playing = false;
             } else {
-                interval = setInterval(function() {displayer.nextWord();}, 225);
+                looper.start();
                 playing = true;
             }
         }
     };
 }
 
-function displayWords(words) {
-    if (words.length === 1 && words[0] === "") {
-        return;
-    }
-    var srDialog = new SrDialog();
-    srDialog.create();
-    var interval;
-    var displayer = new WordDisplayer(words, srDialog, function() {clearInterval(interval); srDialog.remove();});
-    interval = setInterval(function() {displayer.nextWord();}, 225);
-    handleKeyPresses(interval, displayer, srDialog);
+function displayWords(srDialog, words) {
+    var looper;
+    var displayer = new WordDisplayer(words, srDialog, function() {looper.stop(); srDialog.remove();});
+    looper = new Looper(function() {displayer.nextWord();}, 255);
+    looper.start();
+    handleKeyPresses(looper, srDialog);
 }
 
 function speedRead() {
-    displayWords(splitIntoWords(strip(getSelectionText())));
+    var words = splitIntoWords(strip(getSelectionText()));
+    if (words.length === 1 && words[0] === "") {
+        return;
+    }
+
+    var dialog = new SrDialog();
+    dialog.create();
+
+    displayWords(dialog, words);
 }
