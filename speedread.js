@@ -23,7 +23,7 @@ function splitIntoWords(text) {
     return text.split(/\s+/);
 }
 
-var ElementCreator = new function() {
+var ElementCreator = (function() {
     var create = function(type, id, css) {
         var elem = document.createElement(type);
         elem.id = id;
@@ -35,14 +35,16 @@ var ElementCreator = new function() {
         return elem;
     };
 
-    this.createDiv = function(id, css) {
-        return create('div', id, css);
-    };
+    return {
+        createDiv: function(id, css) {
+            return create('div', id, css);
+        },
 
-    this.createPara = function(id, css) {
-        return create('p', id, css);
+        createPara: function(id, css) {
+            return create('p', id, css);
+        }
     };
-}
+})();
 
 function SrDialog() {
     var _dialog = null;
@@ -116,11 +118,11 @@ function Looper(callback, time) {
 
     this.start = function() {
         _interval = setInterval(_callback, _time);
-    }
+    };
 
     this.stop = function() {
         clearInterval(_interval);
-    }
+    };
 }
 
 function handleKeyPresses(looper, srDialog) {
