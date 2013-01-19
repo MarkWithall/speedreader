@@ -2,7 +2,7 @@
 
 function getSelectionText() {
     if (window.getSelection) {
-        return window.getSelection();
+        return window.getSelection().toString();
     }
     if (document.getSelection) {
         return document.getSelection();
@@ -11,12 +11,6 @@ function getSelectionText() {
         return document.selection.createRange().text;
     }
     return '';
-}
-
-function strip(html) {
-    var tmp = document.createElement('DIV');
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText;
 }
 
 function splitIntoWords(text) {
@@ -160,7 +154,7 @@ function displayWords(srDialog, words) {
 }
 
 function speedRead() {
-    var words = splitIntoWords(strip(getSelectionText()));
+    var words = splitIntoWords(getSelectionText());
     if (words.length === 1 && words[0] === "") {
         return;
     }
