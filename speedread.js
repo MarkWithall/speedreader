@@ -1,5 +1,6 @@
 'use strict';
 
+/** @constructor */
 function Page() {
     var _keyEvents = {};
 
