@@ -46,7 +46,10 @@ function splitIntoWords(text) {
     return text.split(/\s+/);
 }
 
-var ElementCreator = (function() {
+/** @constructor */
+function ElementCreator(page) {
+    var _page = page;
+
     var createCssText = function(css) {
         var cssText = '';
         for (var property in css) {
@@ -58,31 +61,30 @@ var ElementCreator = (function() {
     };
 
     var create = function(type, id, css) {
-        var elem = document.createElement(type);
+        var elem = _page.createElement(type);
         elem.id = id;
         elem.style.cssText = createCssText(css);
         return elem;
     };
 
-    return {
-        createDiv: function(id, css) {
-            return create('div', id, css);
-        },
-
-        createPara: function(id, css) {
-            return create('p', id, css);
-        }
+    this.createDiv = function(id, css) {
+        return create('div', id, css);
     };
-})();
+
+    this.createPara = function(id, css) {
+        return create('p', id, css);
+    };
+}
 
 /** @constructor */
-function SrDialog(page) {
+function SrDialog(page, elementCreator) {
     var _page = page;
+    var _elementCreator = elementCreator;
     var _dialog = null;
     var _p = null;
 
     this.create = function() {
-        _dialog = ElementCreator.createDiv('srDialog', {
+        _dialog = _elementCreator.createDiv('srDialog', {
             'background-color': 'white',
             'opacity': '.95',
             'filter': 'alpha(opacity=95)',
@@ -95,7 +97,7 @@ function SrDialog(page) {
         });
 
         /* NOTE: percentages need to be changed to e.g. 100%25 for inline bookmarklets! */
-        _p = ElementCreator.createPara('srWord', {
+        _p = _elementCreator.createPara('srWord', {
             'text-align': 'center',
             'background-color': 'white',
             'color': 'black',
@@ -200,7 +202,8 @@ function speedRead() {
         return;
     }
 
-    var dialog = new SrDialog(page);
+    var elementCreator = new ElementCreator(page);
+    var dialog = new SrDialog(page, elementCreator);
     dialog.create();
 
     var sr = new SpeedReader(dialog, page);
