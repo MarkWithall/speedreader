@@ -1,16 +1,45 @@
 'use strict';
 
-function getSelectionText() {
-    if (window.getSelection) {
-        return window.getSelection().toString();
-    }
-    if (document.getSelection) {
-        return document.getSelection();
-    }
-    if (document.selection) {
-        return document.selection.createRange().text;
-    }
-    return '';
+function Page() {
+    var _keyEvents = {};
+
+    this.createElement = function(type) {
+        return document.createElement(type);
+    };
+
+    this.appendChild = function(child) {
+        document.body.appendChild(child);
+    };
+
+    this.removeChild = function(child) {
+        document.body.removeChild(child);
+    };
+
+    this.addKeyEvent = function(key, action) {
+        if (document.body.onkeydown === null) {
+            document.body.onkeydown = function(evt) {
+                evt = evt || window.event;
+                if (_keyEvents.hasOwnProperty(evt.keyCode)) {
+                    evt.preventDefault();
+                    _keyEvents[evt.keyCode]();
+                }
+            };
+        }
+        _keyEvents[key] = action;
+    };
+
+    this.getSelectedText = function() {
+        if (window.getSelection) {
+            return window.getSelection().toString();
+        }
+        if (document.getSelection) {
+            return document.getSelection();
+        }
+        if (document.selection) {
+            return document.selection.createRange().text;
+        }
+        return '';
+    };
 }
 
 function splitIntoWords(text) {
@@ -129,8 +158,9 @@ function Looper(callback, time) {
 }
 
 /** @constructor */
-function SpeedReader(dialog) {
+function SpeedReader(dialog, page) {
     var _dialog = dialog;
+    var _page = page;
     var _looper = null;
     var _playing = true;
     var ESCAPE_KEY_CODE = 27;
@@ -151,16 +181,8 @@ function SpeedReader(dialog) {
     };
 
     this.handKeyPresses = function() {
-        document.body.onkeydown = function(evt) {
-            evt = evt || window.event;
-            if (evt.keyCode === ESCAPE_KEY_CODE) {
-                evt.preventDefault(); /* stop Mac Safari exiting full screen */
-                finish();
-            } else if (evt.keyCode === SPACE_KEY_CODE) {
-                evt.preventDefault(); /* stop Mac Safari exiting full screen */
-                pauseResume();
-            }
-        };
+        _page.addKeyEvent(ESCAPE_KEY_CODE, function() {finish();});
+        _page.addKeyEvent(SPACE_KEY_CODE, function() {pauseResume();});
     };
 
     this.displayWords = function(words) {
@@ -171,7 +193,8 @@ function SpeedReader(dialog) {
 }
 
 function speedRead() {
-    var words = splitIntoWords(getSelectionText());
+    var page = new Page();
+    var words = splitIntoWords(page.getSelectedText());
     if (words.length === 1 && words[0] === "") {
         return;
     }
@@ -179,7 +202,7 @@ function speedRead() {
     var dialog = new SrDialog();
     dialog.create();
 
-    var sr = new SpeedReader(dialog);
+    var sr = new SpeedReader(dialog, page);
     sr.handKeyPresses();
     sr.displayWords(words);
 }
