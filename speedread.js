@@ -76,7 +76,8 @@ var ElementCreator = (function() {
 })();
 
 /** @constructor */
-function SrDialog() {
+function SrDialog(page) {
+    var _page = page;
     var _dialog = null;
     var _p = null;
 
@@ -110,13 +111,13 @@ function SrDialog() {
 
         _p.innerHTML = '';
         _dialog.appendChild(_p);
-        document.body.appendChild(_dialog);
+        _page.appendChild(_dialog);
         _dialog.focus();
     };
 
     this.remove = function() {
         if (_dialog !== null) {
-            document.body.removeChild(_dialog);
+            _page.removeChild(_dialog);
         }
     };
 
@@ -199,7 +200,7 @@ function speedRead() {
         return;
     }
 
-    var dialog = new SrDialog();
+    var dialog = new SrDialog(page);
     dialog.create();
 
     var sr = new SpeedReader(dialog, page);
