@@ -20,7 +20,7 @@ module('getSelectionText');
 
 test('simpleSelection', function() {
     selectText('testContent');
-    var result = getSelectionText();
+    var result = new Page().getSelectedText();
     return equal(result, 'Test content\n\nThis is a test!');
 });
 
