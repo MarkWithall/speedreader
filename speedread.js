@@ -1,25 +1,29 @@
 'use strict';
 
 /** @constructor */
-function Page() {
+function Page(win, doc) {
+    var _win = win;
+    var _doc = doc;
+    var _body = doc.body;
+
     var _keyEvents = {};
 
     this.createElement = function(type) {
-        return document.createElement(type);
+        return _doc.createElement(type);
     };
 
     this.appendChild = function(child) {
-        document.body.appendChild(child);
+        _body.appendChild(child);
     };
 
     this.removeChild = function(child) {
-        document.body.removeChild(child);
+        _body.removeChild(child);
     };
 
     this.addKeyEvent = function(key, action) {
-        if (document.body.onkeydown === null) {
-            document.body.onkeydown = function(evt) {
-                evt = evt || window.event;
+        if (_body.onkeydown === null) {
+            _body.onkeydown = function(evt) {
+                evt = evt || _win.event;
                 if (_keyEvents.hasOwnProperty(evt.keyCode)) {
                     evt.preventDefault();
                     _keyEvents[evt.keyCode]();
@@ -30,14 +34,14 @@ function Page() {
     };
 
     this.getSelectedText = function() {
-        if (window.getSelection) {
-            return window.getSelection().toString();
+        if (_win.getSelection) {
+            return _win.getSelection().toString();
         }
-        if (document.getSelection) {
-            return document.getSelection();
+        if (_doc.getSelection) {
+            return _doc.getSelection();
         }
-        if (document.selection) {
-            return document.selection.createRange().text;
+        if (_doc.selection) {
+            return _doc.selection.createRange().text;
         }
         return '';
     };
@@ -197,7 +201,7 @@ function SpeedReader(dialog, page) {
 }
 
 function speedRead() {
-    var page = new Page();
+    var page = new Page(window, document);
     var words = splitIntoWords(page.getSelectedText());
     if (words.length === 1 && words[0] === "") {
         return;
