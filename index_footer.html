@@ -1,5 +1,5 @@
         })();">Speed Reader</a> (inline edition) &lt;-- drag this to the bookmark bar.</p>
-    <p><a href="javascript:(function (){var s=document.createElement('script');s.src='http://markwithall.github.com/speedreader/speedread.js';s.type='text/javascript';s.onload=run;document.body.appendChild(s);function run(){speedRead();}})();">Speed Reader</a> (downloads from github each time) &lt;-- drag this to the bookmark bar.</p>
+    <p><a href="javascript:(function (){function run(){speedRead();}if(document.getElementById('speedReaderScript') === null){var s=document.createElement('script');s.id='speedReaderScript';s.src='http://markwithall.github.com/speedreader/speedread.js';s.type='text/javascript';s.onload=run;document.body.appendChild(s);}else{run();}})();">Speed Reader</a> (downloads from github each time) &lt;-- drag this to the bookmark bar.</p>
         <p>To use it, just select some text in a webpage and then click on the bookmark.  The Escape key cancels reading and the space bar pauses/resumes.</p>
     </body>
 </html>
