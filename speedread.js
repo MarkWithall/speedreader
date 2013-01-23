@@ -6,8 +6,6 @@ function Page(win, doc) {
     var _doc = doc;
     var _body = doc.body;
 
-    var _keyEvents = {};
-
     this.createElement = function(type) {
         return _doc.createElement(type);
     };
@@ -20,20 +18,7 @@ function Page(win, doc) {
         _body.removeChild(child);
     };
 
-    this.addKeyEvent = function(key, action) {
-        if (_body.onkeydown === null) {
-            _body.onkeydown = function(evt) {
-                evt = evt || _win.event;
-                if (_keyEvents.hasOwnProperty(evt.keyCode)) {
-                    evt.preventDefault();
-                    _keyEvents[evt.keyCode]();
-                }
-            };
-        }
-        _keyEvents[key] = action;
-    };
-
-    this.getSelectedText = function() {
+   this.getSelectedText = function() {
         if (_win.getSelection) {
             return _win.getSelection().toString();
         }
@@ -87,6 +72,7 @@ function SrDialog(page, elementCreator) {
     var _elementCreator = elementCreator;
     var _dialog = null;
     var _p = null;
+    var _keyEvents = {};
 
     this.create = function() {
         _dialog = _elementCreator.createDiv('srDialog', {
@@ -100,6 +86,9 @@ function SrDialog(page, elementCreator) {
             'height': '100%',
             'z-index': '1000'
         });
+
+        /* NOTE: a div must have a tabindex to be able to attach onkeydown */
+        _dialog.tabIndex = 0;
 
         /* NOTE: percentages need to be changed to e.g. 100%25 for inline bookmarklets! */
         _p = _elementCreator.createPara('srWord', {
@@ -128,6 +117,19 @@ function SrDialog(page, elementCreator) {
         }
     };
 
+    this.addKeyEvent = function(key, action) {
+        if (_dialog.onkeydown === null) {
+            _dialog.onkeydown = function(evt) {
+                evt = evt || _win.event;
+                if (_keyEvents.hasOwnProperty(evt.keyCode)) {
+                    evt.preventDefault();
+                    _keyEvents[evt.keyCode]();
+                }
+            };
+        }
+        _keyEvents[key] = action;
+    };
+ 
     this.showWord = function(word) {
         _p.innerHTML = word;
     };
@@ -166,9 +168,8 @@ function Looper(callback, time) {
 }
 
 /** @constructor */
-function SpeedReader(dialog, page) {
+function SpeedReader(dialog) {
     var _dialog = dialog;
-    var _page = page;
     var _looper = null;
     var _playing = true;
     var ESCAPE_KEY_CODE = 27;
@@ -189,8 +190,8 @@ function SpeedReader(dialog, page) {
     };
 
     this.handKeyPresses = function() {
-        _page.addKeyEvent(ESCAPE_KEY_CODE, function() {finish();});
-        _page.addKeyEvent(SPACE_KEY_CODE, function() {pauseResume();});
+        _dialog.addKeyEvent(ESCAPE_KEY_CODE, function() {finish();});
+        _dialog.addKeyEvent(SPACE_KEY_CODE, function() {pauseResume();});
     };
 
     this.displayWords = function(words) {
@@ -211,7 +212,7 @@ function speedRead() {
     var dialog = new SrDialog(page, elementCreator);
     dialog.create();
 
-    var sr = new SpeedReader(dialog, page);
+    var sr = new SpeedReader(dialog);
     sr.handKeyPresses();
     sr.displayWords(words);
 }
