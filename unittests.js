@@ -21,12 +21,13 @@ module('getSelectionText');
 test('simpleSelection', function() {
     selectText('testContent');
     var result = new Page(window, document).getSelectedText();
-    return equal(result, 'Test content\n\nThis is a test!');
+    notEqual(result.indexOf("Test content"), -1);
+    notEqual(result.indexOf("This is a test!"), -1);
 });
 
 module('splitIntoWords');
 
 test('simpleTest', function() {
     var result = splitIntoWords("a b c d");
-    return deepEqual(result, ['a', 'b', 'c', 'd']);
+    deepEqual(result, ['a', 'b', 'c', 'd']);
 });
