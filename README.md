@@ -15,7 +15,5 @@ Future Work
 * Retain pause between sentences
 * Make it prettier (configurable font, size, colours, etc.)
 * Have bookmarklet generator where one specifies speed, font, etc.
-* Don't keep re-creating script if running multiple times on the same page
 * Add version checking for inline version
 * Test cross-browser compatibility (automatic test suite that can be run on different browsers)
-* Tidy code (+jshint)
