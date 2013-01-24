@@ -7,7 +7,7 @@ Bookmarklet is available from [here](http://markwithall.github.com/speedreader/)
 
 To use: select some text and then click the bookmark.
 
-Tested in Safari and Chrome; inline edition works in IE9.
+Tested in the latest versions of Safari, Chrome, Firefox, Opera and IE.
 
 Future Work
 ==
