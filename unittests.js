@@ -35,7 +35,7 @@ function selectText(element) {
     }
 }
 
-module('getSelectionText');
+module('Page');
 
 test('simpleSelection', function() {
     createText();
