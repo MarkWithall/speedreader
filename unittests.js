@@ -52,3 +52,20 @@ test('simpleTest', function() {
     var result = splitIntoWords("a b c d");
     deepEqual(result, ['a', 'b', 'c', 'd']);
 });
+
+module('SrDialog');
+
+test('keypress', function() {
+    var page = new Page(window, document);
+    var dialog = new SrDialog(page, new ElementCreator(page));
+    dialog.create();
+    var SPACE_KEY_CODE = 32;
+    var spaceDetected = false;
+    dialog.addKeyEvent(SPACE_KEY_CODE, function() {spaceDetected = true;});
+    var evt = jQuery.Event("keydown");
+    evt.keyCode = SPACE_KEY_CODE;
+    $("#srDialog").trigger(evt);
+    dialog.remove();
+    ok(spaceDetected);
+});
+
