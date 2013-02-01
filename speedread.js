@@ -32,8 +32,45 @@ function Page(win, doc) {
     };
 }
 
-function splitIntoWords(text) {
-    return text.split(/\s+/);
+var stringReverse = function(str) {
+    return str.split('').reverse().join('');
+};
+
+function stringNotEmpty(str) {
+    return str != '';
+}
+
+var splitIntoWords = function(text) {
+    return text.split(/\s+/).filter(stringNotEmpty);
+};
+
+function arrayNotEmpty(array) {
+    return array.length > 0;
+}
+
+var splitIntoSentences = function(text) {
+    return stringReverse(text).split(/(?=[.:?!]+)/).map(stringReverse).reverse().map(splitIntoWords).filter(arrayNotEmpty);
+};
+
+/** @constructor */
+function TextSplitter(sentences) {
+    var _sentences = sentences;
+    var _sentence = 0;
+    var _word = 0;
+
+    this.hasNext = function() {
+        return _sentence < _sentences.length;
+    }
+
+    this.nextWord = function() {
+        var nextWord = _sentences[_sentence][_word];
+        _word += 1;
+        if (_word == _sentences[_sentence].length) {
+            _word = 0;
+            _sentence += 1;
+        }
+        return nextWord;
+    };
 }
 
 /** @constructor */
@@ -140,14 +177,12 @@ function WordDisplayer(words, srDialog, finished) {
     var _words = words;
     var _srDialog = srDialog;
     var _finished = finished;
-    var _i = 0;
 
     this.nextWord = function() {
-        if (_i >= _words.length) {
-            _finished();
+        if (_words.hasNext()) {
+            _srDialog.showWord(_words.nextWord());
         } else {
-            _srDialog.showWord(_words[_i]);
-            _i += 1;
+            _finished();
         }
     };
 }
@@ -203,10 +238,11 @@ function SpeedReader(dialog) {
 
 function speedRead() {
     var page = new Page(window, document);
-    var words = splitIntoWords(page.getSelectedText());
-    if (words.length === 1 && words[0] === "") {
+    var sentences = splitIntoSentences(page.getSelectedText());
+    if (sentences.length == 0) {
         return;
     }
+    var words = new TextSplitter(sentences);
 
     var elementCreator = new ElementCreator(page);
     var dialog = new SrDialog(page, elementCreator);
