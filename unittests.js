@@ -73,9 +73,9 @@ module('splitIntoSentences');
 
 test('basicSplit', function() {
     var input = "This is a test. Is a test! A test?";
-    var expectedOutput = [ ['This', 'is', 'a', 'test.' ],
-                           ['Is', 'a', 'test!'],
-                           ['A', 'test?'] ];
+    var expectedOutput = [ ['This', 'is', 'a', 'test.', '' ],
+                           ['Is', 'a', 'test!', ''],
+                           ['A', 'test?', ''] ];
     var result = splitIntoSentences(input);
     deepEqual(result, expectedOutput);
 });

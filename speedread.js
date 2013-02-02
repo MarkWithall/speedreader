@@ -48,8 +48,18 @@ function arrayNotEmpty(array) {
     return array.length > 0;
 }
 
+function appendEmptyElement(array) {
+    return array.concat('');
+}
+
 var splitIntoSentences = function(text) {
-    return stringReverse(text).split(/(?=[.:?!]+)/).map(stringReverse).reverse().map(splitIntoWords).filter(arrayNotEmpty);
+    return stringReverse(text)
+             .split(/(?=[.:?!]+)/)
+             .map(stringReverse)
+             .reverse()
+             .map(splitIntoWords)
+             .filter(arrayNotEmpty)
+             .map(appendEmptyElement)
 };
 
 /** @constructor */
