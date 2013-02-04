@@ -169,8 +169,12 @@ function SrDialog(page, elementCreator) {
             _dialog.onkeydown = function(evt) {
                 evt = evt || window.event;
                 if (_keyEvents.hasOwnProperty(evt.keyCode)) {
-                    evt.preventDefault();
                     _keyEvents[evt.keyCode]();
+                    if (evt.preventDefault) {
+                        evt.preventDefault();
+                    } else {
+                        return false;
+                    }
                 }
             };
         }
