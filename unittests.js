@@ -41,8 +41,8 @@ test('simpleSelection', function() {
     createText();
     selectText('testContent');
     var result = new Page(window, document).getSelectedText();
-    notEqual(result.indexOf("Test content"), -1);
-    notEqual(result.indexOf("This is a test!"), -1);
+    notEqual(result.indexOf("Test content", 0), -1);
+    notEqual(result.indexOf("This is a test!", 0), -1);
     removeText();
 });
 
@@ -76,6 +76,15 @@ test('basicSplit', function() {
     var expectedOutput = [ ['This', 'is', 'a', 'test.', '' ],
                            ['Is', 'a', 'test!', ''],
                            ['A', 'test?', ''] ];
+    var result = splitIntoSentences(input);
+    deepEqual(result, expectedOutput);
+});
+
+test('advancedSplit', function() {
+    var input = 'This is test. "Still a test!" More test???';
+    var expectedOutput = [ ['This', 'is', 'test.', ''],
+                           ['"Still', 'a', 'test!"', ''],
+                           ['More', 'test???', ''] ];
     var result = splitIntoSentences(input);
     deepEqual(result, expectedOutput);
 });
