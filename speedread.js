@@ -37,7 +37,7 @@ var stringReverse = function(str) {
 };
 
 function stringNotEmpty(str) {
-    return str != '';
+    return str !== '';
 }
 
 var splitIntoWords = function(text) {
@@ -59,7 +59,7 @@ var splitIntoSentences = function(text) {
              .reverse()
              .map(splitIntoWords)
              .filter(arrayNotEmpty)
-             .map(appendEmptyElement)
+             .map(appendEmptyElement);
 };
 
 /** @constructor */
@@ -70,12 +70,12 @@ function TextSplitter(sentences) {
 
     this.hasNext = function() {
         return _sentence < _sentences.length;
-    }
+    };
 
     this.nextWord = function() {
         var nextWord = _sentences[_sentence][_word];
         _word += 1;
-        if (_word == _sentences[_sentence].length) {
+        if (_word === _sentences[_sentence].length) {
             _word = 0;
             _sentence += 1;
         }
@@ -167,7 +167,7 @@ function SrDialog(page, elementCreator) {
     this.addKeyEvent = function(key, action) {
         if (_dialog.onkeydown === null) {
             _dialog.onkeydown = function(evt) {
-                evt = evt || _win.event;
+                evt = evt || window.event;
                 if (_keyEvents.hasOwnProperty(evt.keyCode)) {
                     evt.preventDefault();
                     _keyEvents[evt.keyCode]();
@@ -249,7 +249,7 @@ function SpeedReader(dialog) {
 function speedRead() {
     var page = new Page(window, document);
     var sentences = splitIntoSentences(page.getSelectedText());
-    if (sentences.length == 0) {
+    if (sentences.length === 0) {
         return;
     }
     var words = new TextSplitter(sentences);
