@@ -173,10 +173,18 @@ function SrDialog(page, elementCreator) {
                     if (evt.preventDefault) {
                         evt.preventDefault();
                     } else {
-                        return false;
+                        event.returnValue = false;
                     }
+                    return false;
                 }
             };
+            /* To prevent default in Opera */
+            _dialog.onkeypress = function(evt) {
+                evt = evt || window.event;
+                if (_keyEvents.hasOwnProperty(evt.keyCode)) {
+                    return false;
+                }
+            }
         }
         _keyEvents[key] = action;
     };
