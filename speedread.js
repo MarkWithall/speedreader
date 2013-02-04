@@ -54,7 +54,7 @@ function appendEmptyElement(array) {
 
 var splitIntoSentences = function(text) {
     return stringReverse(text)
-             .split(/(?=([.:?!]+["']?))/)
+             .split(/(?=([.:?!]+["']{0,1}))/)
              .map(stringReverse)
              .reverse()
              .map(splitIntoWords)
