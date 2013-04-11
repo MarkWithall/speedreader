@@ -6,7 +6,7 @@
   if (document.getElementById('speedReaderScript') === null) {
     s = document.createElement('script');
     s.id = 'speedReaderScript';
-    s.src = 'http://markwithall.github.com/speedreader/speedread.js';
+    s.src = 'http://markwithall.github.com/speedreader/build/speedread-mini.js';
     s.type = 'text/javascript';
     s.onload = function() {
       return speedRead(window, document);
