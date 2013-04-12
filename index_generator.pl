@@ -6,15 +6,14 @@ use Carp;
 use Template;
 
 open(FILE, 'build/speedread-mini.js') || croak $!;
-<FILE>;
 my $speedread = join('', <FILE>);
 $speedread =~ s/%/%25/g;
+$speedread =~ s/"/&quot;/g;
 chomp $speedread;
 close(FILE);
 
 open(FILE, 'build/speedread-loader-mini.js') || croak $!;
 my $speedread_loader = join('', <FILE>);
-$speedread_loader =~ s/%/%25/g;
 close(FILE);
 
 my $template = Template->new();

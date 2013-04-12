@@ -199,7 +199,7 @@ speedRead = (win, doc) ->
     sr.handleKeyPresses()
     sr.displayWords words
 
-window.speedRead = speedRead
+window['speedRead'] = speedRead
 
 speedRead window, document
 

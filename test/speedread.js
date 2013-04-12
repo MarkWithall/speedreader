@@ -326,6 +326,6 @@ speedRead = function(win, doc) {
   return sr.displayWords(words);
 };
 
-window.speedRead = speedRead;
+window['speedRead'] = speedRead;
 
 speedRead(window, document);
