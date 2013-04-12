@@ -324,7 +324,7 @@
     dialog.create();
     sr = new SpeedReader(dialog);
     sr.handleKeyPresses();
-    return sr.displayWords(words);
+    sr.displayWords(words);
   };
 
   window['speedRead'] = speedRead;

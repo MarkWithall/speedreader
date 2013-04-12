@@ -198,6 +198,7 @@ speedRead = (win, doc) ->
     sr = new SpeedReader dialog
     sr.handleKeyPresses()
     sr.displayWords words
+    return
 
 window['speedRead'] = speedRead
 
