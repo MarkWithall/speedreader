@@ -5,7 +5,7 @@ PERL=perl
 COFFEE=coffee
 # Requires closure-compiler (https://developers.google.com/closure/compiler/)
 COMPILER_JAR=compiler.jar
-MINIFY=java -jar $(COMPILER_JAR) --compilation_level=ADVANCED_OPTIMIZATIONS --formatting=SINGLE_QUOTES
+MINIFY=java -jar $(COMPILER_JAR) --compilation_level=ADVANCED_OPTIMIZATIONS --formatting=SINGLE_QUOTES --output_wrapper "(function(){%output%}).call(this);"
 
 BUILD=build
 TEST=test
