@@ -85,3 +85,15 @@ test 'advancedSplit', () ->
 test 'emptyString', () ->
     result = splitIntoSentences ''
     deepEqual result, [ ]
+
+module 'WpmConverter'
+
+test '100wpm', () =>
+    equal 600, WpmConverter.toTimeout 100
+
+test '300wpm', () =>
+    equal 200, WpmConverter.toTimeout 300
+
+test '550wpm', () =>
+    equal 109, WpmConverter.toTimeout 550
+

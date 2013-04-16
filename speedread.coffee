@@ -185,6 +185,10 @@ class SpeedReader
         @looper = new Looper (() -> displayer.nextWord()), 255
         @looper.start()
 
+class WpmConverter
+    @toTimeout: (wpm) ->
+        Math.round 60000 / wpm
+
 speedRead = (win, doc) ->
     page = new Page(win, doc)
     sentences = splitIntoSentences page.getSelectedText()
