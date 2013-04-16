@@ -159,7 +159,7 @@ class Looper
     stop: -> clearInterval @interval
 
 class SpeedReader
-    constructor: (@dialog) ->
+    constructor: (@dialog, @interval) ->
         @looper = null
         @playing = true
         @ESCAPE_KEY_CODE = 27
@@ -182,14 +182,14 @@ class SpeedReader
 
     displayWords: (words) ->
         displayer = new WordDisplayer words, @dialog, () => @finish()
-        @looper = new Looper (() -> displayer.nextWord()), 255
+        @looper = new Looper (() => displayer.nextWord()), @interval
         @looper.start()
 
 class WpmConverter
-    @toTimeout: (wpm) ->
+    @toInterval: (wpm) ->
         Math.round 60000 / wpm
 
-speedRead = (win, doc) ->
+speedRead = (win, doc, wpm) ->
     page = new Page(win, doc)
     sentences = splitIntoSentences page.getSelectedText()
     return if sentences.length is 0
@@ -199,12 +199,15 @@ speedRead = (win, doc) ->
     dialog = new SrDialog page, elementCreator
     dialog.create()
 
-    sr = new SpeedReader dialog
+    console.log wpm
+    interval = WpmConverter.toInterval wpm
+    console.log interval
+    sr = new SpeedReader dialog, interval
     sr.handleKeyPresses()
     sr.displayWords words
     return
 
 window['speedRead'] = speedRead
 
-speedRead window, document
+speedRead window, document, 350
 

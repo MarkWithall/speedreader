@@ -260,8 +260,9 @@
   })();
 
   SpeedReader = (function() {
-    function SpeedReader(dialog) {
+    function SpeedReader(dialog, interval) {
       this.dialog = dialog;
+      this.interval = interval;
       this.looper = null;
       this.playing = true;
       this.ESCAPE_KEY_CODE = 27;
@@ -302,7 +303,7 @@
       });
       this.looper = new Looper((function() {
         return displayer.nextWord();
-      }), 255);
+      }), this.interval);
       return this.looper.start();
     };
 
@@ -313,7 +314,7 @@
   WpmConverter = (function() {
     function WpmConverter() {}
 
-    WpmConverter.toTimeout = function(wpm) {
+    WpmConverter.toInterval = function(wpm) {
       return Math.round(60000 / wpm);
     };
 
@@ -321,8 +322,8 @@
 
   })();
 
-  speedRead = function(win, doc) {
-    var dialog, elementCreator, page, sentences, sr, words;
+  speedRead = function(win, doc, wpm) {
+    var dialog, elementCreator, interval, page, sentences, sr, words;
 
     page = new Page(win, doc);
     sentences = splitIntoSentences(page.getSelectedText());
@@ -333,13 +334,16 @@
     elementCreator = new ElementCreator(page);
     dialog = new SrDialog(page, elementCreator);
     dialog.create();
-    sr = new SpeedReader(dialog);
+    console.log(wpm);
+    interval = WpmConverter.toInterval(wpm);
+    console.log(interval);
+    sr = new SpeedReader(dialog, interval);
     sr.handleKeyPresses();
     sr.displayWords(words);
   };
 
   window['speedRead'] = speedRead;
 
-  speedRead(window, document);
+  speedRead(window, document, 350);
 
 }).call(this);

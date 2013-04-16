@@ -89,11 +89,11 @@ test 'emptyString', () ->
 module 'WpmConverter'
 
 test '100wpm', () =>
-    equal 600, WpmConverter.toTimeout 100
+    equal 600, WpmConverter.toInterval 100
 
 test '300wpm', () =>
-    equal 200, WpmConverter.toTimeout 300
+    equal 200, WpmConverter.toInterval 300
 
 test '550wpm', () =>
-    equal 109, WpmConverter.toTimeout 550
+    equal 109, WpmConverter.toInterval 550
 

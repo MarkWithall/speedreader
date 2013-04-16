@@ -116,13 +116,13 @@ test('emptyString', function() {
 module('WpmConverter');
 
 test('100wpm', function() {
-  return equal(600, WpmConverter.toTimeout(100));
+  return equal(600, WpmConverter.toInterval(100));
 });
 
 test('300wpm', function() {
-  return equal(200, WpmConverter.toTimeout(300));
+  return equal(200, WpmConverter.toInterval(300));
 });
 
 test('550wpm', function() {
-  return equal(109, WpmConverter.toTimeout(550));
+  return equal(109, WpmConverter.toInterval(550));
 });

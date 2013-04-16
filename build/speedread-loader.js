@@ -9,7 +9,7 @@
     s.type = 'text/javascript';
     document.body.appendChild(s);
   } else {
-    speedRead(window, document);
+    speedRead(window, document, 350);
   }
 
 }).call(this);
