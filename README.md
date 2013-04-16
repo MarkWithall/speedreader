@@ -11,7 +11,6 @@ Tested in the latest versions of Safari, Chrome, Firefox, Opera and IE.
 
 Future Work
 ==
-* Configurable wpm
 * Make it prettier (configurable font, size, colours, etc.)
 * Have bookmarklet generator where one specifies speed, font, etc.
 * Test cross-browser compatibility (automatic test suite that can be run on different browsers)
