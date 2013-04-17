@@ -1,7 +1,8 @@
 'use strict'
 
 class Page
-    constructor: (@win, @doc) ->
+    constructor: (@win) ->
+        @doc = win.document
         @body = @doc.body
 
     createElement: (type) ->
@@ -189,8 +190,8 @@ class WpmConverter
     @toInterval: (wpm) ->
         Math.round 60000 / wpm
 
-speedRead = (win, doc, wpm) ->
-    page = new Page(win, doc)
+speedRead = (win, wpm) ->
+    page = new Page(win)
     sentences = splitIntoSentences page.getSelectedText()
     return if sentences.length is 0
     words = new TextSplitter sentences
@@ -199,15 +200,15 @@ speedRead = (win, doc, wpm) ->
     dialog = new SrDialog page, elementCreator
     dialog.create()
 
-    console.log wpm
     interval = WpmConverter.toInterval wpm
-    console.log interval
     sr = new SpeedReader dialog, interval
     sr.handleKeyPresses()
     sr.displayWords words
     return
 
-window['speedRead'] = speedRead
+win = this
 
-speedRead window, document, 350
+win['speedRead'] = speedRead
+
+speedRead win, 350
 
