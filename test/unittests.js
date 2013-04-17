@@ -50,7 +50,7 @@ test('simpleSelection', function() {
 
   createText();
   selectText('testContent');
-  result = new Page(window, document).getSelectedText();
+  result = new Page(window).getSelectedText();
   notEqual(result.indexOf("Test content", 0), -1);
   notEqual(result.indexOf("This is a test!", 0), -1);
   return removeText();
@@ -70,7 +70,7 @@ module('SrDialog');
 test('keypress', function() {
   var SPACE_KEY_CODE, dialog, evt, page, spaceDetected;
 
-  page = new Page(window, document);
+  page = new Page(window);
   dialog = new SrDialog(page, new ElementCreator(page));
   dialog.create();
   SPACE_KEY_CODE = 32;

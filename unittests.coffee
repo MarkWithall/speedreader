@@ -30,29 +30,29 @@ selectText = (element) ->
 
 module 'Page'
 
-test 'simpleSelection', () ->
+test 'simpleSelection', () =>
     createText()
     selectText 'testContent'
-    result = new Page(window, document).getSelectedText()
+    result = new Page(window).getSelectedText()
     notEqual result.indexOf("Test content", 0), -1
     notEqual result.indexOf("This is a test!", 0), -1
     removeText()
 
 module 'splitIntoWords'
 
-test 'simpleTest', () ->
+test 'simpleTest', () =>
     result = splitIntoWords "a b c d"
     deepEqual result, ['a', 'b', 'c', 'd']
 
 module 'SrDialog'
 
-test 'keypress', () ->
-    page = new Page window, document
+test 'keypress', () =>
+    page = new Page window
     dialog = new SrDialog page, new ElementCreator(page)
     dialog.create()
     SPACE_KEY_CODE = 32
     spaceDetected = false
-    dialog.addKeyEvent SPACE_KEY_CODE, () ->
+    dialog.addKeyEvent SPACE_KEY_CODE, () =>
         spaceDetected = true
         return
     evt = jQuery.Event "keydown"
@@ -64,7 +64,7 @@ test 'keypress', () ->
 
 module 'splitIntoSentences'
 
-test 'basicSplit', () ->
+test 'basicSplit', () =>
     input = "This is a test. Is a test! A test?"
     expectedOutput = [ \
         ['This', 'is', 'a', 'test.', '' ], \
@@ -73,7 +73,7 @@ test 'basicSplit', () ->
     result = splitIntoSentences input
     deepEqual result, expectedOutput
 
-test 'advancedSplit', () ->
+test 'advancedSplit', () =>
     input = 'This is test. "Still a test!" More test???'
     expectedOutput = [ \
         ['This', 'is', 'test.', ''], \
@@ -82,7 +82,7 @@ test 'advancedSplit', () ->
     result = splitIntoSentences input
     deepEqual result, expectedOutput
 
-test 'emptyString', () ->
+test 'emptyString', () =>
     result = splitIntoSentences ''
     deepEqual result, [ ]
 
