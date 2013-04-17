@@ -2,8 +2,9 @@
 
 class Page
     constructor: (@win) ->
-        @doc = win.document
+        @doc = @win.document
         @body = @doc.body
+        @event = @win.event
 
     createElement: (type) ->
         @doc.createElement type
@@ -22,6 +23,12 @@ class Page
         if @doc.selection
             return @doc.selection.createRange().text
         ''
+
+    setInterval: (callback, time) ->
+        @win.setInterval callback, time
+
+    clearInterval: (interval) ->
+        @win.clearInterval interval
 
 stringReverse = (str) -> str.split('').reverse().join('')
 
@@ -118,7 +125,7 @@ class SrDialog
     remove: -> @page.removeChild @dialog unless @dialog is null
 
     onKeyDown: (evt) ->
-        evt = evt or window.event
+        evt = evt or @page.event
         if @keyEvents.hasOwnProperty evt.keyCode
             @keyEvents[evt.keyCode]()
             if evt.preventDefault
@@ -127,7 +134,7 @@ class SrDialog
                 event.returnValue = false
 
     onKeyPress: (evt) ->
-        evt = evt or window.event
+        evt = evt or @page.event
         not @keyEvents.hasOwnProperty evt.keyCode
 
     addKeyEvent: (key, action) ->
@@ -152,15 +159,15 @@ class WordDisplayer
             @finished()
 
 class Looper
-    constructor: (@callback, @time) ->
+    constructor: (@page, @callback, @time) ->
         @interval = null
 
-    start: -> @interval = setInterval @callback, @time
+    start: -> @interval = @page.setInterval @callback, @time
 
-    stop: -> clearInterval @interval
+    stop: -> @page.clearInterval @interval
 
 class SpeedReader
-    constructor: (@dialog, @interval) ->
+    constructor: (@page, @dialog, @interval) ->
         @looper = null
         @playing = true
         @ESCAPE_KEY_CODE = 27
@@ -183,7 +190,7 @@ class SpeedReader
 
     displayWords: (words) ->
         displayer = new WordDisplayer words, @dialog, () => @finish()
-        @looper = new Looper (() => displayer.nextWord()), @interval
+        @looper = new Looper @page, (() => displayer.nextWord()), @interval
         @looper.start()
 
 class WpmConverter
@@ -201,7 +208,7 @@ speedRead = (win, wpm) ->
     dialog.create()
 
     interval = WpmConverter.toInterval wpm
-    sr = new SpeedReader dialog, interval
+    sr = new SpeedReader page, dialog, interval
     sr.handleKeyPresses()
     sr.displayWords words
     return

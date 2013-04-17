@@ -6,8 +6,9 @@
   Page = (function() {
     function Page(win) {
       this.win = win;
-      this.doc = win.document;
+      this.doc = this.win.document;
       this.body = this.doc.body;
+      this.event = this.win.event;
     }
 
     Page.prototype.createElement = function(type) {
@@ -33,6 +34,14 @@
         return this.doc.selection.createRange().text;
       }
       return '';
+    };
+
+    Page.prototype.setInterval = function(callback, time) {
+      return this.win.setInterval(callback, time);
+    };
+
+    Page.prototype.clearInterval = function(interval) {
+      return this.win.clearInterval(interval);
     };
 
     return Page;
@@ -179,7 +188,7 @@
     };
 
     SrDialog.prototype.onKeyDown = function(evt) {
-      evt = evt || window.event;
+      evt = evt || this.page.event;
       if (this.keyEvents.hasOwnProperty(evt.keyCode)) {
         this.keyEvents[evt.keyCode]();
         if (evt.preventDefault) {
@@ -191,7 +200,7 @@
     };
 
     SrDialog.prototype.onKeyPress = function(evt) {
-      evt = evt || window.event;
+      evt = evt || this.page.event;
       return !this.keyEvents.hasOwnProperty(evt.keyCode);
     };
 
@@ -241,18 +250,19 @@
   })();
 
   Looper = (function() {
-    function Looper(callback, time) {
+    function Looper(page, callback, time) {
+      this.page = page;
       this.callback = callback;
       this.time = time;
       this.interval = null;
     }
 
     Looper.prototype.start = function() {
-      return this.interval = setInterval(this.callback, this.time);
+      return this.interval = this.page.setInterval(this.callback, this.time);
     };
 
     Looper.prototype.stop = function() {
-      return clearInterval(this.interval);
+      return this.page.clearInterval(this.interval);
     };
 
     return Looper;
@@ -260,7 +270,8 @@
   })();
 
   SpeedReader = (function() {
-    function SpeedReader(dialog, interval) {
+    function SpeedReader(page, dialog, interval) {
+      this.page = page;
       this.dialog = dialog;
       this.interval = interval;
       this.looper = null;
@@ -301,7 +312,7 @@
       displayer = new WordDisplayer(words, this.dialog, function() {
         return _this.finish();
       });
-      this.looper = new Looper((function() {
+      this.looper = new Looper(this.page, (function() {
         return displayer.nextWord();
       }), this.interval);
       return this.looper.start();
@@ -334,10 +345,8 @@
     elementCreator = new ElementCreator(page);
     dialog = new SrDialog(page, elementCreator);
     dialog.create();
-    console.log(wpm);
     interval = WpmConverter.toInterval(wpm);
-    console.log(interval);
-    sr = new SpeedReader(dialog, interval);
+    sr = new SpeedReader(page, dialog, interval);
     sr.handleKeyPresses();
     sr.displayWords(words);
   };
