@@ -56,15 +56,6 @@ test('simpleSelection', function() {
   return removeText();
 });
 
-module('splitIntoWords');
-
-test('simpleTest', function() {
-  var result;
-
-  result = splitIntoWords("a b c d");
-  return deepEqual(result, ['a', 'b', 'c', 'd']);
-});
-
 module('SrDialog');
 
 test('keypress', function() {
@@ -86,14 +77,21 @@ test('keypress', function() {
   return dialog.clearKeyEvents();
 });
 
-module('splitIntoSentences');
+module('Splitter');
+
+test('splitIntoWords', function() {
+  var result;
+
+  result = Splitter.splitIntoWords("a b c d");
+  return deepEqual(result, ['a', 'b', 'c', 'd']);
+});
 
 test('basicSplit', function() {
   var expectedOutput, input, result;
 
   input = "This is a test. Is a test! A test?";
   expectedOutput = [['This', 'is', 'a', 'test.', ''], ['Is', 'a', 'test!', ''], ['A', 'test?', '']];
-  result = splitIntoSentences(input);
+  result = Splitter.splitIntoSentences(input);
   return deepEqual(result, expectedOutput);
 });
 
@@ -102,14 +100,14 @@ test('advancedSplit', function() {
 
   input = 'This is test. "Still a test!" More test???';
   expectedOutput = [['This', 'is', 'test.', ''], ['"Still', 'a', 'test!"', ''], ['More', 'test???', '']];
-  result = splitIntoSentences(input);
+  result = Splitter.splitIntoSentences(input);
   return deepEqual(result, expectedOutput);
 });
 
 test('emptyString', function() {
   var result;
 
-  result = splitIntoSentences('');
+  result = Splitter.splitIntoSentences('');
   return deepEqual(result, []);
 });
 

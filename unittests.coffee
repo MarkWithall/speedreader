@@ -38,12 +38,6 @@ test 'simpleSelection', () =>
     notEqual result.indexOf("This is a test!", 0), -1
     removeText()
 
-module 'splitIntoWords'
-
-test 'simpleTest', () =>
-    result = splitIntoWords "a b c d"
-    deepEqual result, ['a', 'b', 'c', 'd']
-
 module 'SrDialog'
 
 test 'keypress', () =>
@@ -62,7 +56,11 @@ test 'keypress', () =>
     ok(spaceDetected)
     dialog.clearKeyEvents()
 
-module 'splitIntoSentences'
+module 'Splitter'
+
+test 'splitIntoWords', () =>
+    result = Splitter.splitIntoWords "a b c d"
+    deepEqual result, ['a', 'b', 'c', 'd']
 
 test 'basicSplit', () =>
     input = "This is a test. Is a test! A test?"
@@ -70,7 +68,7 @@ test 'basicSplit', () =>
         ['This', 'is', 'a', 'test.', '' ], \
         ['Is', 'a', 'test!', ''], \
         ['A', 'test?', ''] ]
-    result = splitIntoSentences input
+    result = Splitter.splitIntoSentences input
     deepEqual result, expectedOutput
 
 test 'advancedSplit', () =>
@@ -79,11 +77,11 @@ test 'advancedSplit', () =>
         ['This', 'is', 'test.', ''], \
         ['"Still', 'a', 'test!"', ''], \
         ['More', 'test???', ''] ]
-    result = splitIntoSentences input
+    result = Splitter.splitIntoSentences input
     deepEqual result, expectedOutput
 
 test 'emptyString', () =>
-    result = splitIntoSentences ''
+    result = Splitter.splitIntoSentences ''
     deepEqual result, [ ]
 
 module 'WpmConverter'

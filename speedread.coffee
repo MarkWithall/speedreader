@@ -30,24 +30,30 @@ class Page
     clearInterval: (interval) ->
         @win.clearInterval interval
 
-stringReverse = (str) -> str.split('').reverse().join('')
+class Splitter
+    @stringReverse: (str) ->
+        str.split('').reverse().join('')
 
-stringNotEmpty = (str) -> str isnt ''
+    @stringNotEmpty: (str) ->
+        str isnt ''
 
-splitIntoWords = (text) -> text.split(/\s+/).filter(stringNotEmpty)
+    @splitIntoWords: (text) ->
+        text.split(/\s+/).filter(Splitter.stringNotEmpty)
 
-arrayNotEmpty = (array) -> array.length > 0
+    @arrayNotEmpty: (array) ->
+        array.length > 0
 
-appendEmptyElement = (array) -> array.concat ''
+    @appendEmptyElement: (array) ->
+        array.concat ''
 
-splitIntoSentences = (text) ->
-    stringReverse(text) \
-        .split(/(?=[\s\n\r]+["']?[.?!]+)/) \
-        .map(stringReverse) \
-        .reverse() \
-        .map(splitIntoWords) \
-        .filter(arrayNotEmpty) \
-        .map(appendEmptyElement)
+    @splitIntoSentences: (text) ->
+        @stringReverse(text) \
+            .split(/(?=[\s\n\r]+["']?[.?!]+)/) \
+            .map(Splitter.stringReverse) \
+            .reverse() \
+            .map(Splitter.splitIntoWords) \
+            .filter(Splitter.arrayNotEmpty) \
+            .map(Splitter.appendEmptyElement)
 
 class TextSplitter
     constructor: (@sentences) ->
@@ -199,7 +205,7 @@ class WpmConverter
 
 speedRead = (win, wpm) ->
     page = new Page(win)
-    sentences = splitIntoSentences page.getSelectedText()
+    sentences = Splitter.splitIntoSentences page.getSelectedText()
     return if sentences.length is 0
     words = new TextSplitter sentences
 
