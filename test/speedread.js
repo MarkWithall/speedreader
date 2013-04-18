@@ -113,16 +113,21 @@ ElementCreator = (function() {
   }
 
   createCssText = function(css) {
-    var cssText, key, val;
+    var cssProperties, key, val;
 
-    cssText = '';
-    for (key in css) {
-      val = css[key];
-      if (css.hasOwnProperty(key)) {
-        cssText += key + ': ' + val + ';';
+    cssProperties = (function() {
+      var _results;
+
+      _results = [];
+      for (key in css) {
+        val = css[key];
+        if (css.hasOwnProperty(key)) {
+          _results.push(key + ':' + val);
+        }
       }
-    }
-    return cssText;
+      return _results;
+    })();
+    return cssProperties.join(';');
   };
 
   ElementCreator.prototype.create = function(type, id, css) {

@@ -74,9 +74,9 @@ class ElementCreator
     constructor: (@page) ->
 
     createCssText = (css) ->
-        cssText = ''
-        cssText += key + ': ' + val + ';' for key, val of css when css.hasOwnProperty key
-        cssText
+        cssProperties = for key, val of css when css.hasOwnProperty key
+            key + ':' + val
+        cssProperties.join ';'
 
     create: (type, id, css) ->
         elem = @page.createElement type
