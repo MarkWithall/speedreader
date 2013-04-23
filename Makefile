@@ -13,7 +13,7 @@ LOADER=speedread-loader
 SPEEDREAD=speedread
 UNITTESTS=unittests
 
-.PHONY: all builddir clean
+.PHONY: all builddir test clean
 
 all: builddir $(BUILD)/$(LOADER)-mini.js $(BUILD)/$(SPEEDREAD)-mini.js $(TEST)/$(SPEEDREAD).js $(TEST)/$(UNITTESTS).js index.html
 
@@ -40,6 +40,9 @@ $(TEST)/$(SPEEDREAD).js: $(SPEEDREAD).coffee
 
 $(TEST)/$(UNITTESTS).js: $(UNITTESTS).coffee
 	$(COFFEE) -o $(TEST) -b -c $<
+
+test:
+	jasmine-node --coffee --verbose spec/
 
 clean:
 	$(RM) $(BUILD)/*.js $(TEST)/*.js index.html

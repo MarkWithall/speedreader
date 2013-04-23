@@ -362,8 +362,10 @@ speedRead = function(win, wpm) {
   sr.displayWords(words);
 };
 
-win = this;
-
-win['speedRead'] = speedRead;
-
-speedRead(win, 350);
+if (typeof exports !== "undefined" && exports !== null) {
+  exports.Page = Page;
+} else {
+  win = this;
+  win['speedRead'] = speedRead;
+  speedRead(win, 350);
+}

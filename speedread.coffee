@@ -219,9 +219,10 @@ speedRead = (win, wpm) ->
     sr.displayWords words
     return
 
-win = this
-
-win['speedRead'] = speedRead
-
-speedRead win, 350
+if exports?
+    exports.Page = Page
+else
+    win = this
+    win['speedRead'] = speedRead
+    speedRead win, 350
 
