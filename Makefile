@@ -10,6 +10,7 @@ MINIFY=java -jar $(COMPILER_JAR) --compilation_level=ADVANCED_OPTIMIZATIONS --fo
 BUILD=build
 TEST=test
 SPEC=spec
+SPECOUTPUT=$(TEST)/spec
 LOADER=speedread-loader
 SPEEDREAD=speedread
 UNITTESTS=unittests
@@ -43,11 +44,11 @@ $(TEST)/$(UNITTESTS).js: $(UNITTESTS).coffee
 	$(COFFEE) -o $(TEST) -b -c $<
 
 specs:
-	$(COFFEE) -c $(SPEC) 
+	$(COFFEE) -o $(SPECOUTPUT) -c $(SPEC) 
 
 test:
 	jasmine-node --coffee --verbose spec/
 
 clean:
-	$(RM) $(BUILD)/*.js $(TEST)/*.js $(SPEC)/*.spec.js index.html
+	$(RM) $(BUILD)/*.js $(TEST)/*.js $(SPECOUTPUT)/*.spec.js index.html
 
