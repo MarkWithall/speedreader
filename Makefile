@@ -9,13 +9,14 @@ MINIFY=java -jar $(COMPILER_JAR) --compilation_level=ADVANCED_OPTIMIZATIONS --fo
 
 BUILD=build
 TEST=test
+SPEC=spec
 LOADER=speedread-loader
 SPEEDREAD=speedread
 UNITTESTS=unittests
 
-.PHONY: all builddir test clean
+.PHONY: all builddir specs test clean
 
-all: builddir $(BUILD)/$(LOADER)-mini.js $(BUILD)/$(SPEEDREAD)-mini.js $(TEST)/$(SPEEDREAD).js $(TEST)/$(UNITTESTS).js index.html
+all: builddir $(BUILD)/$(LOADER)-mini.js $(BUILD)/$(SPEEDREAD)-mini.js $(TEST)/$(SPEEDREAD).js $(TEST)/$(UNITTESTS).js specs index.html
 
 builddir:
 	$(MKDIR) $(BUILD)
@@ -41,9 +42,12 @@ $(TEST)/$(SPEEDREAD).js: $(SPEEDREAD).coffee
 $(TEST)/$(UNITTESTS).js: $(UNITTESTS).coffee
 	$(COFFEE) -o $(TEST) -b -c $<
 
+specs:
+	$(COFFEE) -c $(SPEC) 
+
 test:
 	jasmine-node --coffee --verbose spec/
 
 clean:
-	$(RM) $(BUILD)/*.js $(TEST)/*.js index.html
+	$(RM) $(BUILD)/*.js $(TEST)/*.js $(SPEC)/*.spec.js index.html
 

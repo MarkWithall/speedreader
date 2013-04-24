@@ -1,5 +1,7 @@
 if exports?
     sr = require '../speedread'
+else
+    sr = window
 
 class FakeWin
     setInterval: (c, t) ->
