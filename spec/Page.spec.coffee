@@ -1,7 +1,8 @@
 if exports?
     sr = require '../speedread'
+    Page = sr.Page
 else
-    sr = window
+    Page = window.Page
 
 class FakeWin
     setInterval: (c, t) ->
@@ -18,7 +19,7 @@ describe 'Page', =>
     page = null
     beforeEach () ->
         win = new FakeWin()
-        page = new sr.Page(win)
+        page = new Page(win)
     it 'passes createElement through to window.createElement', =>
         spyOn win.document, 'createElement'
         page.createElement 1

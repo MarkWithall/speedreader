@@ -365,6 +365,7 @@
 
   if (typeof exports !== "undefined" && exports !== null) {
     exports.Page = Page;
+    exports.Splitter = Splitter;
   } else {
     win = this;
     win['speedRead'] = speedRead;

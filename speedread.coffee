@@ -221,6 +221,7 @@ speedRead = (win, wpm) ->
 
 if exports?
     exports.Page = Page
+    exports.Splitter = Splitter
 else
     win = this
     win['speedRead'] = speedRead
