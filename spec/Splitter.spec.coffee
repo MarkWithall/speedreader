@@ -5,7 +5,7 @@ else
     Splitter = window.Splitter
 
 describe 'Splitter', =>
-    it 'splits space-separated letters into list of letters', =>
+    it 'splits space-separated words into list of letters', =>
         result = Splitter.splitIntoWords "a b c d"
         expect(result).toEqual ['a', 'b', 'c', 'd']
 
